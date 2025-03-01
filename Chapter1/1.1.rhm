@@ -1,0 +1,45 @@
+#lang rhombus
+
+42
+
+6 * 7
+
+fun square(x :: Number) :: Number:
+  x * x
+
+square(2.0)
+
+fun min(x :: Real, y :: Real) :: Real:
+  if x .<= y | x | y
+
+square(3 + 4)
+
+min(3, 4)
+
+square(min (3, 4))
+
+def side = 12
+def area = square(side)
+
+area
+
+min((area + 4), 150)
+
+// 1.1.1
+fun quad(x :: Number) :: Number:
+  square(x) * square(x)
+  
+check quad(4) ~is 256
+
+// 1.1.2
+fun max(x :~ Real, y :~ Real):
+ if x .>= y | x | y
+
+check max(10, 110) ~is 110
+
+// 1.1.3
+def π = 22/7
+fun area_of_circle(r :: Number) :: Number:
+  π * square(r)
+
+check area_of_circle(5) ~is 550/7
