@@ -32,7 +32,7 @@ fun quad(x :: Number) :: Number:
 check quad(4) ~is 256
 
 // 1.1.2
-fun max(x :~ Real, y :~ Real):
+fun max(x :: Real, y :: Real):
  if x .>= y | x | y
 
 check max(10, 110) ~is 110
