@@ -1,6 +1,6 @@
 #lang rhombus
 
-/* 1.2.1
+/* 1.2.1 -----
 
 // Normal-order evaluation
 
@@ -67,7 +67,7 @@
 */
 
 
-/* 1.2.2
+/* 1.2.2 -----
    fun three(x): 3
 
    three(3 + 4)
@@ -79,7 +79,7 @@
 */
 
 
-/* 1.2.3
+/* 1.2.3 -----
 
 /* Syntax rules:
    i) zero is an expression
@@ -139,7 +139,7 @@
 
 */
 
-/* 1.2.4
+/* 1.2.4 -----
 
 // Reduction rules:
 // 1??x => x1101

@@ -1,9 +1,9 @@
 #lang rhombus
 
-// 1.4.1
+// 1.4.1 -----
 // definite_integral :: (num -> num) -> (num -> (num -> num))
 
-// 1.4.2
+// 1.4.2 -----
 // (num -> num) -> num
 fun apply_zero(f :: Number -> Number) :: Number:
   f(0)
@@ -26,7 +26,7 @@ check:
   apply_and_multiply(fun(n): n * n)(3)
   ~is 27
 
-// 1.4.3
+// 1.4.3 -----
 // sign :: num -> num
 fun sign(n :: Number) :: Int:
   cond
@@ -39,7 +39,7 @@ check:
   sign(200) ~is 1
   sign(0) ~is 0
 
-// 1.4.4
+// 1.4.4 -----
 // one :: α -> num
 fun one(x):
   1

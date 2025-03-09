@@ -22,11 +22,11 @@ check:
   is_square(1.333) ~is #false
   is_square(0) ~is #true
 
-// 1.5.1
+// 1.5.1 -----
 // isSquare :: num -> bool
 // isSquare x = true then √x∈ℤ, for all x >= 0
 
-// 1.5.2
+// 1.5.2 -----
 // intsqrt :: num -> num
 // intsqrt x = ⌊√x⌋, for all x >= 0
 
