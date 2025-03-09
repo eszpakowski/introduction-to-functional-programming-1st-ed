@@ -1,0 +1,97 @@
+#lang rhombus
+
+// 2.1.1 -----
+
+// 3 div 1 * 3 = 9
+// 3 * 7 div 4 = 5
+// 6 div 2 * 8 div 4 = 6
+
+// 2.1.4 -----
+// Function that subtracts x from the following argument
+check:
+  let x = 2
+  (_ + (-x))(3)
+  ~is 1
+
+// 2.1.5 -----
+check:
+  ((_ == 9) ∘ (_ + 2) ∘ (_ * 7))(1)
+  ~is #true
+
+// 2.1.6 -----
+// (*) x = (*x) # true
+check:
+  let x = 2
+  (_ * x)(3) == (x * _)(3)
+  ~is #true
+
+// (+) x = (x+) #true
+check:
+  let x = 2
+  (_ + x)(3) == (x + _)(3)
+  ~is #true
+
+// (-) x = (-x) #false
+// (-x) is an unary operation of negation
+
+// 2.1.7 -----
+def eps = 0.0001
+
+fun until(pred :: Any -> Boolean, f :: Function, x :: Any) :: Any:
+  cond
+  | (pred(x)): x
+  | ~else: until(pred, f, f(x))
+
+// Computes square root of a number.
+fun sqrt(x :: Real) :: Real:
+  fun satis(y :: Real) :: Boolean:
+    math.abs(math.expt(y, 2) - x) < eps
+  fun improve(y :: Real) :: Real:
+    (y + x / y) / 2
+  until(satis, improve, x)
+
+check:
+  let result = sqrt(2)
+  math.inexact(result)
+  ~is 1.4142156862745099
+
+//// Improved version
+  
+fun until_pred(pred :: (Any, Any) -> Boolean, f :: Function, prev :: Any, curr :: Any) :: Any:
+  cond
+  | (pred(prev, curr)): curr
+  | ~else: until_pred(pred, f, curr, f(curr))
+	   
+fun deriv(f :: Function, x :: Real):
+  let dx = 0.0001
+  (f(x + dx) - f(x)) / dx
+
+fun newton(f :: Function, x :: Real) :: Real: 
+  fun satis(prev :: Real, curr :: Real) :: Boolean:
+    println("Previous approximation: " +& prev ++ ", current: " +& curr)
+    math.abs(prev - curr) < eps * math.abs(curr)
+  fun improve(y :: Real) :: Real:
+    y - (f(y) / deriv(f, y))
+  until_pred(satis, improve, x, improve(x))
+
+// Computes square root of a number using Newton-Raphson method
+fun sqrt_improved(x :: Real) :: Real:
+  fun f(y): (math.expt(y, 2) - x)
+  newton(f, x)
+
+check:
+  sqrt_improved(1) ~is 1
+  sqrt_improved(2) ~is 1.4142135624531955
+  sqrt_improved(49) ~is 7.0000000000010845
+  sqrt_improved(900) ~is 30.000000000003972
+
+// Computes cube root of a number using Newton-Raphson method
+fun cubrt(x :: Real) :: Real:
+  fun f(y): (math.expt(y, 3)) - x
+  newton(f, x)
+
+check:
+  cubrt(1) ~is 1
+  cubrt(27) ~is 3.0000000042892077
+  cubrt(64) ~is 4.000000000013733
+  cubrt(1000) ~is 10.000000003976009
