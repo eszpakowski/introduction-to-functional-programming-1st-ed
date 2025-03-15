@@ -1,4 +1,8 @@
-#lang rhombus
+#lang rhombus/static
+
+/*
+  1.1 Functional programming
+*/
 
 42
 

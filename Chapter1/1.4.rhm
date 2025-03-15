@@ -1,4 +1,8 @@
-#lang rhombus
+#lang rhombus/static
+
+/*
+  1.4 Functions and definitions
+*/
 
 // 1.4.1 -----
 // definite_integral :: (num -> num) -> (num -> (num -> num))

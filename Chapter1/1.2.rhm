@@ -1,5 +1,9 @@
 #lang rhombus
 
+/*
+  1.2 Expressions and values
+*/
+
 /* 1.2.1 -----
 
 // Normal-order evaluation

@@ -1,4 +1,8 @@
-#lang rhombus
+#lang rhombus/static
+
+/*
+  2.1 Numbers
+*/
 
 // 2.1.1 -----
 
@@ -57,7 +61,8 @@ check:
 
 //// Improved version
   
-fun until_pred(pred :: (Any, Any) -> Boolean, f :: Function, prev :: Any, curr :: Any) :: Any:
+fun until_pred(pred :: (Any, Any) -> Boolean, f :: Function,
+               prev :: Any, curr :: Any) :: Any:
   cond
   | (pred(prev, curr)): curr
   | ~else: until_pred(pred, f, curr, f(curr))

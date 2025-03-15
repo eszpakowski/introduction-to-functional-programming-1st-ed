@@ -1,4 +1,8 @@
-#lang rhombus
+#lang rhombus/static
+
+/*
+  1.5 Specifications and implementations
+*/
 
 fun square(x :: Number) :: Number:
   x * x
