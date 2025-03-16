@@ -59,12 +59,13 @@ fun is_alphabet_letter(x :: AsciiChar) :: Boolean:
 fun nextlet(x :: LetterOfAlphabet) :: LetterOfAlphabet:
   if(x == Char"Z")
   | Char"A"
-  | Char.from_int(Char.to_int(x) + 1)
+  | Char.from_int(x.to_int() + 1)
   
 check nextlet(Char"a") ~is Char"B"
 check nextlet(Char"B") ~is Char"C"
 check nextlet(Char"X") ~is Char"Y"
 check nextlet(Char"Z") ~is Char"A"
+check nextlet(Char"ó") ~throws "argument does not satisfy annotation"
 
 // 2.3.2 ----
 fun digitval(s :: String) :: Int:
@@ -89,9 +90,9 @@ check digitval("X") ~throws "Unrecognized value!"
 ["McMillan", "Macmillan", "MacMillan"].sort()
 
 // 2.3.4 ----
-showln(repr(42))
-showln(repr(42) ++ repr(42))
-show("\n")
+showln(repr(42)) // "42"
+showln(repr(42) ++ repr(42)) // "4242"
+show("\n") // "\n"
 
 // 2.3.5 ----
 fun space(n :: NonnegInt) :: String:
