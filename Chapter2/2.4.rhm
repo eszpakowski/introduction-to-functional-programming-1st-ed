@@ -43,7 +43,8 @@ fun norm(x :: Int, y :: NonnegInt) :: List.of(Int):
   [u div d, v div d]
 
 // Adds two fractional numbers
-fun radd([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+fun radd([x, y] :: Tuple.of(Int),
+         [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
   norm((x * v) + (u * y), y * v)
 
 check 2/9 + 3/9 ~is 5/9
@@ -52,7 +53,8 @@ check 4/3 + 5/2 ~is 23/6
 check radd([4, 3], [5, 2]) ~is [23, 6]
 
 // Subtracts one fractional number from another
-fun rsub([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+fun rsub([x, y] :: Tuple.of(Int),
+         [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
   norm((x * v) - (u * y), y * v)
 
 check 7/3 - 5/3 ~is 2/3
@@ -61,7 +63,8 @@ check 4/3 - 5/2 ~is -7/6
 check rsub([4, 3], [5, 2]) ~is [-7, 6]
 
 // Multiplies two fractional numbers
-fun rmul([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+fun rmul([x, y] :: Tuple.of(Int),
+         [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
   norm(x * u, y * v)
 
 check 2/7 * 3/5 ~is 6/35
@@ -70,7 +73,8 @@ check 5/9 * -3/4 ~is -5/12
 check rmul([5, 9], [-3, 4]) ~is [-5, 12]
 
 // Divides one fractional number by another
-fun rdiv([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+fun rdiv([x, y] :: Tuple.of(Int),
+         [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
   norm(x * v, y * u)
 
 check 1/2 / 1/4 ~is 2/1
@@ -79,7 +83,9 @@ check 3/4 / 2/5 ~is 15/8
 check rdiv([3, 4], [2, 5]) ~is [15, 8]
 
 // Compares two fractional numbers using function op.
-fun compare(op :: Function, [x, y]  :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Boolean:
+fun compare(op :: (Int, Int) -> Boolean,
+            [x, y]  :: Tuple.of(Int),
+            [u, v] :: Tuple.of(Int)) :: Boolean:
   op(x * v, y * u)
 
 fun requals(x, y): compare((_ == _), x, y)
@@ -108,7 +114,8 @@ annot.macro 'Triple.of($annot)':
   'List.of($annot) && matching(List(_, _, _))'
 
 // Returns age in years given the birth date then current date in format [d, m, y].
-fun age([bd, bm, by] :: Triple.of(Int), [cd, cm, cy] :: Triple.of(Int)) :: Int:
+fun age([bd, bm, by] :: Triple.of(Int),
+        [cd, cm, cy] :: Triple.of(Int)) :: Int:
   let same_year = (cy == by)
   let same_month = (cm == bm)
   let current_month_or_day_before = (cm < bm) || (same_month && (cd < bd))
