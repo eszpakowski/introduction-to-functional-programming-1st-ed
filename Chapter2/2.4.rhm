@@ -41,6 +41,8 @@ fun radd([x, y] :: Tuple.of(Int),
          [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
   norm((x * v) + (u * y), y * v)
 
+operator (t1 ⊕ t2): radd(t1, t2)
+
 // Subtracts one fractional number from another
 fun rsub([x, y] :: Tuple.of(Int),
          [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
@@ -121,6 +123,10 @@ module test:
     check radd([2, 9], [3, 9]) ~is [5, 9]
     check 4/3 + 5/2 ~is 23/6
     check radd([4, 3], [5, 2]) ~is [23, 6]
+    
+    check 2/9 + 3/9 + 4/3 + 5/2 ~is 79/18
+    check radd(radd([2, 9], [3, 9]), radd([4, 3], [5, 2]))~is [79, 18]
+    check [2, 9] ⊕ [3, 9] ⊕ [4, 3] ⊕ [5, 2] ~is [79, 18]
 
     check 7/3 - 5/3 ~is 2/3
     check rsub([7, 3], [5, 3]) ~is [2, 3]
