@@ -53,9 +53,9 @@ module test:
     check apply_and_multiply(fun(n): n * n)(3) ~is 27
 
   check:
-      sign(-128) ~is -1
-      sign(200) ~is 1
-      sign(0) ~is 0
+    sign(-128) ~is -1
+    sign(200) ~is 1
+    sign(0) ~is 0
 
   block:
     check apply(fun(x): x * x)(3) ~is 9
