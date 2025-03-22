@@ -22,6 +22,7 @@ check:
   #false == (1 < 3)
   ~is #false
 
+
 // 2.2.2 ----
 fun square(x :: Real) :: Real:
   x * x
@@ -35,10 +36,9 @@ fun sumsqrs(x :: Real, y :: Real, z :: Real) :: Real:
   | ((y .<= x) && (y .<= z)): sum_square(x, z)
   | ~else: sum_square(x, y)		    
 
-check sumsqrs(1, 2, 3) ~is 13
-check sumsqrs(0, -100, 3) ~is 9
-check sumsqrs(11, -2, 1) ~is 122
-    
 
-
-
+module test:
+  check:
+    sumsqrs(1, 2, 3) ~is 13
+    sumsqrs(0, -100, 3) ~is 9
+    sumsqrs(11, -2, 1) ~is 122

@@ -10,26 +10,14 @@ annot.macro 'AsciiChar':
 fun is_ascii(x :: Char) :: Boolean:
   x.to_int() <= 127
 
-check is_ascii(Char"A") ~is #true
-check is_ascii(Char"Ó") ~is #false
-
 fun isdigit(x :: AsciiChar) :: Boolean:
   (Char"0" <= x) && (x <= Char"9")
-
-check isdigit(Char"1") ~is #true
-check isdigit(Char"A") ~is #false
 
 fun issupper(x :: AsciiChar) :: Boolean:
   (Char"A" <= x) && (x <= Char"Z")
 
-check issupper(Char"C") ~is #true
-check issupper(Char"c") ~is #false
-
 fun islower(x :: AsciiChar) :: Boolean:
   (Char"a" <= x) && (x <= Char"z")
-
-check islower(Char"c") ~is #true
-check islower(Char"C") ~is #false
 
 // Converts lower-case ASCII letters to upper-case
 fun capitalise(x :: AsciiChar) :: AsciiChar:
@@ -37,11 +25,6 @@ fun capitalise(x :: AsciiChar) :: AsciiChar:
   if(islower(x))
   | Char.from_int(offset + x.to_int())
   | x
-
-check capitalise(Char"a") ~is Char"A"
-check capitalise(Char"x") ~is Char"X"
-check capitalise(Char"Z") ~is Char"Z"
-check capitalise(Char"ó") ~throws "argument does not satisfy annotation"
 
 
 // 2.3.1 ----
@@ -60,12 +43,7 @@ fun nextlet(x :: LetterOfAlphabet) :: LetterOfAlphabet:
   if(x == Char"Z")
   | Char"A"
   | Char.from_int(x.to_int() + 1)
-  
-check nextlet(Char"a") ~is Char"B"
-check nextlet(Char"B") ~is Char"C"
-check nextlet(Char"X") ~is Char"Y"
-check nextlet(Char"Z") ~is Char"A"
-check nextlet(Char"ó") ~throws "argument does not satisfy annotation"
+
 
 // 2.3.2 ----
 fun digitval(s :: String) :: Int:
@@ -82,17 +60,16 @@ fun digitval(s :: String) :: Int:
   | "nine":  9
   | ~else: throw error("Unrecognized value!")
 
-check digitval("one") ~is 1
-check digitval("nine") ~is 9
-check digitval("X") ~throws "Unrecognized value!"
 
 // 2.3.3 ----
 ["McMillan", "Macmillan", "MacMillan"].sort()
+
 
 // 2.3.4 ----
 showln(repr(42)) // "42"
 showln(repr(42) ++ repr(42)) // "4242"
 show("\n") // "\n"
+
 
 // 2.3.5 ----
 fun space(n :: NonnegInt) :: String:
@@ -104,17 +81,11 @@ fun ljustify(n :: NonnegInt, x :: String) :: String:
   | x
   | x ++ space(n - m)
 
-check ljustify(10, "abc") ~is "abc       "
-check ljustify(5, "abcdefghijk") ~is "abcdefghijk"
-
 fun rjustify(n :: NonnegInt, x :: String) :: String:
   let m = x.length()
   if (m >= n)
   | x
   | space(n - m) ++ x
-
-check rjustify(10, "abc") ~is "       abc"
-check rjustify(5, "abcdefghijk") ~is "abcdefghijk"
 
 fun cjustify(n :: NonnegInt, x :: String) :: String:
   let m = x.length()
@@ -124,5 +95,50 @@ fun cjustify(n :: NonnegInt, x :: String) :: String:
     let rm = (n - m) - lm
     space(lm) ++ x ++ space(rm)
 
-check cjustify(10, "abc") ~is "   abc    "
-check cjustify(5, "abcdefghijk") ~is "abcdefghijk"
+
+module test:
+  check:
+    is_ascii(Char"A") ~is #true
+    is_ascii(Char"Ó") ~is #false
+
+  check:
+    isdigit(Char"1") ~is #true
+    isdigit(Char"A") ~is #false
+
+  check:
+    issupper(Char"C") ~is #true
+    issupper(Char"c") ~is #false
+
+  check:
+    islower(Char"c") ~is #true
+    islower(Char"C") ~is #false
+
+  check:
+    capitalise(Char"a") ~is Char"A"
+    capitalise(Char"x") ~is Char"X"
+    capitalise(Char"Z") ~is Char"Z"
+    capitalise(Char"ó") ~throws "argument does not satisfy annotation"
+
+  check:
+    nextlet(Char"a") ~is Char"B"
+    nextlet(Char"B") ~is Char"C"
+    nextlet(Char"X") ~is Char"Y"
+    nextlet(Char"Z") ~is Char"A"
+    nextlet(Char"ó") ~throws "argument does not satisfy annotation"
+
+  check:
+    digitval("one") ~is 1
+    digitval("nine") ~is 9
+    digitval("X") ~throws "Unrecognized value!"
+
+  check:
+    ljustify(10, "abc") ~is "abc       "
+    ljustify(5, "abcdefghijk") ~is "abcdefghijk"
+
+  check:
+    rjustify(10, "abc") ~is "       abc"
+    rjustify(5, "abcdefghijk") ~is "abcdefghijk"
+
+  check:
+    cjustify(10, "abc") ~is "   abc    "
+    cjustify(5, "abcdefghijk") ~is "abcdefghijk"

@@ -10,28 +10,28 @@ fun square(x :: Number) :: Number:
 fun intsqrt(x :: NonnegReal):: NonnegReal:
   math.floor(math.sqrt(x))
 
-check:
-  intsqrt(9.3) ~is 3.0
-  intsqrt(7) ~is 2.0
-  intsqrt(16) ~is 4
-  intsqrt(0) ~is 0
-
 fun is_square(x :: NonnegReal) :: Boolean:
   square(intsqrt(x)) == x
-
-check:
-  is_square(9.0) ~is #true
-  is_square(7) ~is #false
-  is_square(9.3) ~is #false
-  is_square(1.333) ~is #false
-  is_square(0) ~is #true
 
 // 1.5.1 -----
 // isSquare :: num -> bool
 // isSquare x = true then √x∈ℤ, for all x >= 0
 
+
 // 1.5.2 -----
 // intsqrt :: num -> num
 // intsqrt x = ⌊√x⌋, for all x >= 0
 
+module test:
+  check:
+    intsqrt(9.3) ~is 3.0
+    intsqrt(7) ~is 2.0
+    intsqrt(16) ~is 4
+    intsqrt(0) ~is 0
 
+  check:
+    is_square(9.0) ~is #true
+    is_square(7) ~is #false
+    is_square(9.3) ~is #false
+    is_square(1.333) ~is #false
+    is_square(0) ~is #true
