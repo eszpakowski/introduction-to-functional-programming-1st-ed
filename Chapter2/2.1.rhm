@@ -41,7 +41,9 @@ check:
 // 2.1.7 -----
 def eps = 0.0001
 
-fun until(pred :: Any -> Boolean, f :: Function, x :: Any) :: Any:
+fun until(pred :: Any -> Boolean,
+          f :: Function,
+          x :: Any) :: Any:
   cond
   | (pred(x)): x
   | ~else: until(pred, f, f(x))
