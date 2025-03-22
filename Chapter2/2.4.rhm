@@ -1,0 +1,147 @@
+#lang rhombus/static/and_meta
+
+/*
+  2.4 Tuples
+*/
+
+annot.macro 'Tuple.of($annot)':
+  'List.of($annot) && matching(List(_, _))'
+
+// Returns quotient and remainder of one number by another.
+fun quotrem([x, y] :: Tuple.of(Int)) :: Tuple.of(Int):
+  [x div y, x mod y]
+
+check quotrem([10, 3]) ~is [3, 1]
+check quotrem([49, 7]) ~is [7, 0]
+
+// Computes the roots of a quadratic equation with coefficients (a, b, c)
+fun roots([a, b, c] :: List.of(Int)) :: Tuple.of(Real):
+  let d = math.expt(b, 2) - 4 * a * c
+  let r = math.sqrt(d)
+  let r1 = (-b + r) / (2 * a)
+  let r2 = (-b -r) / (2 * a)
+  [r1, r2]
+
+check roots([1, 5, 6]) ~is [-2, -3]
+check roots([3, 10, 8]) ~is [-4/3, -2]
+check roots([6, 17, 12]) ~is [-4/3, -3/2]
+
+/*
+  Example: rational arithmetic
+*/
+
+fun sign(n :: Number) :: Int:
+  cond
+  | (n > 0): 1
+  | (n < 0): -1
+  | ~else: 0
+
+fun norm(x :: Int, y :: NonnegInt) :: List.of(Int):
+  let u = sign(y) * x
+  let v = math.abs(y)
+  let d = math.gcd(math.abs(u), v)
+  [u div d, v div d]
+
+// Adds two fractional numbers
+fun radd([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+  norm((x * v) + (u * y), y * v)
+
+check 2/9 + 3/9 ~is 5/9
+check radd([2, 9], [3, 9]) ~is [5, 9]
+check 4/3 + 5/2 ~is 23/6
+check radd([4, 3], [5, 2]) ~is [23, 6]
+
+// Subtracts one fractional number from another
+fun rsub([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+  norm((x * v) - (u * y), y * v)
+
+check 7/3 - 5/3 ~is 2/3
+check rsub([7, 3], [5, 3]) ~is [2, 3]
+check 4/3 - 5/2 ~is -7/6
+check rsub([4, 3], [5, 2]) ~is [-7, 6]
+
+// Multiplies two fractional numbers
+fun rmul([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+  norm(x * u, y * v)
+
+check 2/7 * 3/5 ~is 6/35
+check rmul([2, 7], [3, 5]) ~is [6, 35]
+check 5/9 * -3/4 ~is -5/12
+check rmul([5, 9], [-3, 4]) ~is [-5, 12]
+
+// Divides one fractional number by another
+fun rdiv([x, y] :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Tuple.of(Int):
+  norm(x * v, y * u)
+
+check 1/2 / 1/4 ~is 2/1
+check rdiv([1, 2], [1, 4]) ~is [2, 1]
+check 3/4 / 2/5 ~is 15/8
+check rdiv([3, 4], [2, 5]) ~is [15, 8]
+
+// Compares two fractional numbers using function op.
+fun compare(op :: Function, [x, y]  :: Tuple.of(Int), [u, v] :: Tuple.of(Int)) :: Boolean:
+  op(x * v, y * u)
+
+fun requals(x, y): compare((_ == _), x, y)
+fun rless(x, y): compare((_ .< _), x, y)
+fun rgreater(x, y): compare((_ .> _), x, y)
+
+check requals([1, 2], [1, 2]) ~is #true
+check requals([2, 1], [1, 2]) ~is #false
+check rless([3, 7], [4, 9]) ~is #true
+check rless([4, 9], [3, 7]) ~is #false
+check rgreater([4, 9], [3, 7]) ~is #true
+check rgreater([3, 7], [4, 9]) ~is #false
+
+fun showrat(x :: Int, y :: Int):
+  let [u, v] = norm(x, y)
+  if(v == 1)
+  | repr(u)
+  | repr(u) ++ "/" ++ repr(v)
+
+check showrat(55, 8) ~is "55/8"
+check showrat(56, 8) ~is "7"
+
+// 2.4.1 ----
+
+annot.macro 'Triple.of($annot)':
+  'List.of($annot) && matching(List(_, _, _))'
+
+// Returns age in years given the birth date then current date in format [d, m, y].
+fun age([bd, bm, by] :: Triple.of(Int), [cd, cm, cy] :: Triple.of(Int)) :: Int:
+  let same_year = (cy == by)
+  let same_month = (cm == bm)
+  let current_month_or_day_before = (cm < bm) || (same_month && (cd < bd))
+  let current_date_before_birth = (cy < by) || (same_year && current_month_or_day_before)
+  if (current_date_before_birth)
+  | 0
+  | if (current_month_or_day_before)
+    | cy - by - 1
+    | cy - by
+
+check age([1, 1, 2025], [1, 1, 2000]) ~is 0
+check age([1, 1, 1999], [1, 1, 2000]) ~is 1
+check age([2, 1, 1999], [1, 1, 2000]) ~is 0
+check age([10, 2, 2000], [9, 2, 2025]) ~is 24
+check age([10, 2, 2000], [10, 2, 2025]) ~is 25
+check age([10, 2, 2000], [11, 2, 2225]) ~is 225
+
+// 2.4.2 ----
+
+// For a given integer x, returns a pair of integers [y, z] such that:
+// (i)   abs(y) <= 5
+// (ii)  x = y + 10 * z
+// (iii) z is the smallest absolute value which satisfies (i) and (ii)
+fun split(x :: Int) :: Tuple.of(Int):
+  let z = x div 10
+  let y = x mod 10
+  if (y <= 5)
+  | [y, z]
+  | [y - 10, z + 1]  
+
+check split(6) ~is [-4, 1]
+check split(11) ~is [1, 1]
+check split(19) ~is [-1, 2]
+check split(105) ~is [5, 10]
+check split(996) ~is [-4, 100]
+
