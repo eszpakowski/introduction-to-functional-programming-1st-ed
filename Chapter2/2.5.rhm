@@ -1,0 +1,97 @@
+#lang rhombus/static/and_meta
+
+/*
+  2.5 Patterns
+*/
+
+fun permute :: NonnegInt
+| permute(0): 1
+| permute(1): 2
+| permute(2): 0
+| permute(n :: NonnegInt): throw error("Unsupported number!")
+	      
+
+// 2.5.1 ----
+namespace single_match:
+  export: ∧ ∨
+	    
+  operator (x ∧ y):
+    match [x, y]
+    | [x, #true]: x
+    | [x, #false]: #false
+
+  operator (x ∨ y):
+    match [x, y]
+    | [x, #true]: #true
+    | [x, #false]: x
+
+namespace double_match:
+  export: ∧ ∨
+
+  operator (x ∧ y):
+    match [x, y]
+    | [#true, #true]:   #true
+    | [#false, #false]: #false
+    | [#false, #true]:  #false
+    | [#true, #false]:  #false
+
+  operator (x ∨ y):
+    match [x, y]
+    | [#true, #true]:   #true
+    | [#false, #false]: #false
+    | [#false, #true]:  #true
+    | [#true, #false]:  #true
+
+
+// 2.5.2 ----
+
+// Returns the predecessor of a number
+fun pred :: NonnegInt
+| pred(0): 0
+| pred(n :: NonnegInt): n - 1
+
+
+module test:
+  check:
+    permute(2) ~is 0
+    permute(6) ~throws "Unsupported number!"
+
+  check:
+    pred(0) ~is 0
+    pred(1) ~is 0
+    pred(2) ~is 1
+    pred(100) ~is 99
+
+  block:
+    import:
+      .single_match open
+      
+    let truthy = (2 > 1)
+    let falsy  = (2 < 1)
+    check truthy ∧ truthy ~is #true
+    check falsy  ∧ truthy ~is #false
+    check truthy ∧ falsy  ~is #false
+    check falsy  ∧ falsy  ~is #false
+
+    check truthy ∨ truthy ~is #true
+    check falsy  ∨ truthy ~is #true
+    check truthy ∨ falsy  ~is #true
+    check falsy  ∨ falsy  ~is #false
+
+  block:
+    import:
+      .double_match open
+
+    let truthy = (2 > 1)
+    let falsy  = (2 < 1)
+    check truthy ∧ truthy ~is #true
+    check falsy  ∧ truthy ~is #false
+    check truthy ∧ falsy  ~is #false
+    check falsy  ∧ falsy  ~is #false
+
+    check truthy ∨ truthy ~is #true
+    check falsy  ∨ truthy ~is #true
+    check truthy ∨ falsy  ~is #true
+    check falsy  ∨ falsy  ~is #false
+
+
