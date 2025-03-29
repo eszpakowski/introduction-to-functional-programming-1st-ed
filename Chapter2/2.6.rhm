@@ -57,11 +57,11 @@ operator (x ∨ y):
 
 
 module test:
-
   check divide_by_zero(1000) ~throws "division by zero"
 
-  check double(halve(4)) ~is 4
-  check halve(double(4)) ~is 4 
+  check:
+    double(halve(4)) ~is 4
+    halve(double(4)) ~is 4 
 
   block:
     let truthy = (2 > 1)
