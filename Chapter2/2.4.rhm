@@ -60,7 +60,7 @@ fun rdiv([x, y] :: Tuple.of(Int),
 
 // Compares two fractional numbers using function op.
 fun compare(op :: (Int, Int) -> Boolean,
-            [x, y]  :: Tuple.of(Int),
+            [x, y] :: Tuple.of(Int),
             [u, v] :: Tuple.of(Int)) :: Boolean:
   op(x * v, y * u)
 
@@ -125,7 +125,7 @@ module test:
     check radd([4, 3], [5, 2]) ~is [23, 6]
     
     check 2/9 + 3/9 + 4/3 + 5/2 ~is 79/18
-    check radd(radd([2, 9], [3, 9]), radd([4, 3], [5, 2]))~is [79, 18]
+    check radd(radd([2, 9], [3, 9]), radd([4, 3], [5, 2])) ~is [79, 18]
     check [2, 9] ⊕ [3, 9] ⊕ [4, 3] ⊕ [5, 2] ~is [79, 18]
 
     check 7/3 - 5/3 ~is 2/3
