@@ -1,0 +1,76 @@
+#lang rhombus/static
+
+/*
+  Functions
+*/
+
+// (∘) :: (β -> γ) -> (α -> β) -> (α -> γ)
+
+
+/* 2.6.1 ----
+
+  h x y = f (g x y)
+
+  h = f ∘ g           => true
+  h x = f ∘ (g x)     => false
+  h x y = (f ∘ g) x y => true
+
+*/
+
+
+// 2.6.2 ----
+fun divide_by_zero(n :: Number):
+  n/0
+
+
+// 2.6.3 ----
+fun halve(n :: NonnegInt) :: NonnegInt:
+  n / 2
+  
+fun double(n :: NonnegInt) :: NonnegInt:
+  n * 2
+
+
+/* 2.6.4 ----
+  If both f and g are strict then:
+  f⊥ = ⊥
+  g⊥ = ⊥
+
+  And the composition of those functions is still strict:
+  (f ∘ g) ⊥ =
+  f(g ⊥)    =
+  f(⊥)      =
+  ⊥
+
+*/
+
+// 2.6.5 ----
+operator (x ∧ y):
+  cond
+  | (x == #true && y == #true): #true
+  | ~else: #false
+
+operator (x ∨ y):
+  cond
+  | (x == #false && y == #false): #false
+  | ~else: #true
+
+
+module test:
+
+  check divide_by_zero(1000) ~throws "division by zero"
+
+  check double(halve(4)) ~is 4
+  check halve(double(4)) ~is 4 
+
+  let truthy = (2 > 1)
+  let falsy  = (2 < 1)
+  check truthy ∧ truthy ~is #true
+  check falsy  ∧ truthy ~is #false
+  check truthy ∧ falsy  ~is #false
+  check falsy  ∧ falsy  ~is #false
+
+  check truthy ∨ truthy ~is #true
+  check falsy  ∨ truthy ~is #true
+  check truthy ∨ falsy  ~is #true
+  check falsy  ∨ falsy  ~is #false
