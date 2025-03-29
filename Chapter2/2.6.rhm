@@ -63,14 +63,15 @@ module test:
   check double(halve(4)) ~is 4
   check halve(double(4)) ~is 4 
 
-  let truthy = (2 > 1)
-  let falsy  = (2 < 1)
-  check truthy ∧ truthy ~is #true
-  check falsy  ∧ truthy ~is #false
-  check truthy ∧ falsy  ~is #false
-  check falsy  ∧ falsy  ~is #false
+  block:
+    let truthy = (2 > 1)
+    let falsy  = (2 < 1)
+    check truthy ∧ truthy ~is #true
+    check falsy  ∧ truthy ~is #false
+    check truthy ∧ falsy  ~is #false
+    check falsy  ∧ falsy  ~is #false
 
-  check truthy ∨ truthy ~is #true
-  check falsy  ∨ truthy ~is #true
-  check truthy ∨ falsy  ~is #true
-  check falsy  ∨ falsy  ~is #false
+    check truthy ∨ truthy ~is #true
+    check falsy  ∨ truthy ~is #true
+    check truthy ∨ falsy  ~is #true
+    check falsy  ∨ falsy  ~is #false
