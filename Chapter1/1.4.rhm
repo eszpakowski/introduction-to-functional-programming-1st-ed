@@ -36,14 +36,15 @@ fun sign(n :: Number) :: Int:
 fun one(x):
   1
 
-// apply :: (α -> β) -> (α -> β)
+// apply :: (α -> β) -> α -> β
 fun apply(f):
   fun(x): f(x)
 
-// compose :: ((α, β) -> γ) -> (α -> (β -> γ))
+// compose :: (β -> γ) -> (α -> β) -> α -> γ
 fun compose(f):
   fun(g):
-    fun(x): f(g, x)
+    fun(x):
+      f(g(x))
 
 
 module test:
@@ -59,4 +60,4 @@ module test:
 
   block:
     check apply(fun(x): x * x)(3) ~is 9
-    check compose(fun(x, y): x + y)(4)(6) ~is 10
+    check compose(fun(x): x * 1000)(fun(y): y + 2)(2) ~is 4000
